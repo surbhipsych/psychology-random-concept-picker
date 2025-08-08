@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Psychology Class 12 - Random Word Picker</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+2&display=swap');
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: 'Baloo 2', cursive;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      padding: 3rem;
+      border-radius: 2rem;
+      box-shadow: 0 0 40px #0ff, 0 0 80px #0ff inset;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+
+    #wordDisplay {
+      font-size: 2.2rem;
+      margin: 2rem 0;
+      color: #fff;
+      min-height: 3rem;
+      text-shadow: 0 0 10px #f0f, 0 0 20px #0ff;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      animation: neonPulse 2s infinite alternate;
+    }
+
+    @keyframes neonPulse {
+      from {
+        transform: rotateY(-10deg) scale(1);
+        text-shadow: 0 0 10px #0ff, 0 0 30px #0ff;
+      }
+      to {
+        transform: rotateY(10deg) scale(1.1);
+        text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+      }
+    }
+
+    button {
+      padding: 1rem 2rem;
+      background-color: #0ff;
+      color: #000;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      box-shadow: 0 0 15px #0ff;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px #0ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📚 Psychology Class 12</h1>
+    <div id="wordDisplay">Click below to begin</div>
+    <button id="pickButton">Get Random Word</button>
+  </div>
+  <script>
+    let words = [
+      "Adaptation", "Aggression", "Alarm Reaction", "Alienation", "Anal Stage", "Anorexia Nervosa",
+      "Antisocial Personality", "Anxiety", "Anxiety Disorders", "Applied Psychology", "Aptitude",
+      "Aptitude Tests", "Archetypes", "Arousal", "Attitudes", "Attitude Object", "Autism Spectrum Disorder",
+      "Balance", "Behaviour Therapy", "Beliefs", "Bipolar and Related Disorders", "Cardinal Trait",
+      "Case Study", "Central Traits", "Centrality of Attitude", "Client-Centred (Rogerian) Therapy",
+      "Cognition", "Cognitive Assessment System", "Cognitive Consistency", "Cognitive Dissonance",
+      "Cognitive Therapies", "Cohesiveness", "Collective Unconscious", "Componential Intelligence", "Conflict",
+      "Congruent Attitude Change", "Contextual Intelligence", "Coping", "Creativity", "Culture-Fair Test",
+      "Defence Mechanisms", "Deinstitutionalisation", "Delusions", "Depersonalisation/Derealisation Disorder",
+      "Depressive Disorders", "Diathesis-Stress Model", "Diffusion of Responsibility", "Discrimination",
+      "Displacement", "Dissociation", "Ego", "Emotional Intelligence", "Empathy", "Environment", "Exhaustion",
+      "Exorcism", "Experiential Intelligence", "Extraversion", "Extremeness of Attitude", "Factor Analysis",
+      "Fluid Intelligence", "General Adaptation Syndrome (GAS)", "Genetics", "Gestalt Therapy", "g-factor",
+      "Group", "Group Test", "Groupthink", "Hallucination", "Halo Effect", "Hardiness", "Homeostasis",
+      "Humanistic Approach", "Humanistic Therapy", "Id", "Ideal Self", "Identification", "Identity",
+      "Incongruent Attitude Change", "Individual Differences", "Individual Test", "Industrial/Organisational Psychology",
+      "Inferiority Complex", "Ingroup", "Intellectual Disability", "Intellectual Giftedness", "Intelligence",
+      "Intelligence Quotient (IQ)", "Intelligence Tests", "Interest", "Interview", "Introversion", "Kernel of Truth",
+      "Latency Period", "Libido", "Life Skills", "Lifestyle", "Meditation", "Mental Age (MA)", "Metaneeds", "Modelling",
+      "Neurodevelopmental Disorders", "Neurotransmitter", "Normal Probability Curve", "Norms", "Observational Method",
+      "Obsessive-Compulsive Disorder (OCD)", "Oedipus Complex", "Optimism", "Outgroup", "Performance Test",
+      "Personal Identity", "Persuasibility", "Phallic Stage", "Phobia", "Planning", "Positive Health",
+      "Post-Traumatic Stress Disorder (PTSD)", "Prejudice", "Primary Group", "Problem-Solving Behaviour",
+      "Projection", "Projective Techniques", "Proximity", "Psychodynamic Approach", "Psychodynamic Therapy",
+      "Psychological Test", "Psychoneuroimmunology", "Psychotherapy", "Rational Emotive Therapy (RET)", "Rationalisation",
+      "Reaction Formation", "Regression", "Rehabilitation", "Relaxation Training", "Repression", "Resilience",
+      "Resistance", "Roles", "Scapegoating", "Schizophrenia", "Self-Actualisation", "Self-Awareness", "Self-Efficacy",
+      "Self-Esteem", "Self-Fulfilling Prophecy", "Self-Regulation", "Sensitivity", "Simplicity or Complexity of Attitude",
+      "Simultaneous Processing", "Situationism", "Social Facilitation", "Social Identity", "Social Influence",
+      "Social Loafing", "Social Support", "Somatoform Disorders", "Status", "Stereotype", "Stress", "Stressors",
+      "Structure", "Substance Abuse", "Successive Processing", "Superego", "Surface Traits", "Syndrome",
+      "Systematic Desensitisation", "Therapeutic Alliance", "Token Economy", "Trait", "Trait Approach", "Typology",
+      "Unconditional Positive Regard", "Unconscious", "Valence of Attitude", "Values", "Verbal Test"
+    ];
+
+    const wordDisplay = document.getElementById("wordDisplay");
+    const pickButton = document.getElementById("pickButton");
+
+    pickButton.addEventListener("click", () => {
+      const randomIndex = Math.floor(Math.random() * words.length);
+      const selectedWord = words[randomIndex];
+      animateWord(selectedWord);
+    });
+
+    function animateWord(word) {
+      wordDisplay.style.opacity = 0;
+      setTimeout(() => {
+        wordDisplay.textContent = word;
+        wordDisplay.style.opacity = 1;
+      }, 400);
+    }
+  </script>
+</body>
+</html>
